@@ -5,7 +5,7 @@
 #![allow(unused_mut)]
 
 // Some basic includes to alwawys include
-use std::collections::{HashSet, HashMap, VecDeque};
+use std::collections::{HashMap, HashSet, VecDeque};
 
 extern crate adventofcode;
 

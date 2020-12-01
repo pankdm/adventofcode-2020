@@ -8,47 +8,38 @@
 use std::collections::{HashMap, HashSet, VecDeque};
 
 extern crate adventofcode;
-
 use adventofcode::*;
 
 pub fn part1(lines: &Vec<String>) -> i64 {
-    // TODO: code here
-    let mut res = 0;
     let mut x = Vec::new();
     for line in lines {
         let n = parse_i64(line);
         x.push(n);
     }
     for i in 0..x.len() {
-        for j in i + 1..x.len() {
+        for j in 0..i {
             if x[i] + x[j] == 2020 {
                 return x[i] * x[j];
             }
         }
     }
-
-    -1
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
-    // TODO: code here
-    let mut res = 0;
     let mut x = Vec::new();
     for line in lines {
         let n = parse_i64(line);
         x.push(n);
     }
     for i in 0..x.len() {
-        for j in i + 1..x.len() {
-            for k in j + 1..x.len() {
+        for j in 0..i {
+            for k in 0..j {
                 if x[i] + x[j] + x[k] == 2020 {
                     return x[i] * x[j] * x[k];
                 }
             }
         }
     }
-
-    -1
 }
 
 #[cfg(test)]
