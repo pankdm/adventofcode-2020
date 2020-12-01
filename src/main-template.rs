@@ -12,13 +12,14 @@ extern crate adventofcode;
 use adventofcode::*;
 
 pub fn part1(lines: &Vec<String>) -> i64 {
-    // TODO: code here
     let mut res = 0;
+    // TODO: code here
     res
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
+    // TODO: code here
     res
 }
 
