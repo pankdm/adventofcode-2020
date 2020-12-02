@@ -35,9 +35,8 @@ pub fn part2(lines: &Vec<String>) -> i64 {
     for line in lines {
         let (a, b, ch, pass): (usize, usize, char, String) =
             serde_scan::scan!("{}-{} {}: {}" <- line).unwrap();
-
-        let a1 = pass.chars().nth(a - 1).unwrap();
-        let b1 = pass.chars().nth(b - 1).unwrap();
+        let a1 = pass.as_bytes()[a - 1] as char;
+        let b1 = pass.as_bytes()[b - 1] as char;
         let mut count = 0;
         if a1 == ch {
             count += 1;
@@ -49,7 +48,6 @@ pub fn part2(lines: &Vec<String>) -> i64 {
             res += 1;
         }
     }
-
     res
 }
 
