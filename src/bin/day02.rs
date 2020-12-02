@@ -7,21 +7,18 @@
 // Some basic includes to alwawys include
 use std::collections::{HashMap, HashSet, VecDeque};
 
-extern crate adventofcode;
+use serde_scan;
 
-use adventofcode::*;
+extern crate aoc;
+use aoc::*;
 
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     for line in lines {
-        let parts = split_string(line, " ");
-        let nums = split_string(&parts[0], "-");
-        let a = parse_i64(&nums[0]);
-        let b = parse_i64(&nums[1]);
-        let ch = parts[1].chars().nth(0).unwrap();
-        // println!("a={} b={}, ch={}", a, b, ch);
+        let (a, b, ch, pass): (usize, usize, char, String) =
+            serde_scan::scan!("{}-{} {}: {}" <- line).unwrap();
         let mut count = 0;
-        for c in parts[2].chars() {
+        for c in pass.chars() {
             if c == ch {
                 count += 1;
             }
@@ -36,13 +33,11 @@ pub fn part1(lines: &Vec<String>) -> i64 {
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     for line in lines {
-        let parts = split_string(line, " ");
-        let nums = split_string(&parts[0], "-");
-        let a = parse_i64(&nums[0]) - 1;
-        let b = parse_i64(&nums[1]) - 1;
-        let ch = parts[1].chars().nth(0).unwrap();
-        let a1 = parts[2].chars().nth(a as usize).unwrap();
-        let b1 = parts[2].chars().nth(b as usize).unwrap();
+        let (a, b, ch, pass): (usize, usize, char, String) =
+            serde_scan::scan!("{}-{} {}: {}" <- line).unwrap();
+
+        let a1 = pass.chars().nth(a - 1).unwrap();
+        let b1 = pass.chars().nth(b - 1).unwrap();
         let mut count = 0;
         if a1 == ch {
             count += 1;

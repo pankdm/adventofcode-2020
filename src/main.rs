@@ -7,9 +7,10 @@
 // Some basic includes to alwawys include
 use std::collections::{HashMap, HashSet, VecDeque};
 
-extern crate adventofcode;
+use serde_scan;
 
-use adventofcode::*;
+extern crate aoc;
+use aoc::*;
 
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
