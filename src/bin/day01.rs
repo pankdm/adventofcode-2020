@@ -37,14 +37,13 @@ pub fn part2(lines: &Vec<String>) -> i64 {
         .iter()
         .cloned()
         .tuple_combinations()
-        .filter_map(|(a, b, c)| {
+        .find_map(|(a, b, c)| {
             if a + b + c == 2020 {
                 Some(a * b * c)
             } else {
                 None
             }
         })
-        .next()
         .unwrap();
     res
 }
