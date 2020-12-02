@@ -5,6 +5,7 @@
 #![allow(unused_mut)]
 
 // Some basic includes to alwawys include
+use itertools::Itertools;
 use std::collections::{HashMap, HashSet, VecDeque};
 
 extern crate aoc;
@@ -16,14 +17,14 @@ pub fn part1(lines: &Vec<String>) -> i64 {
         let n = parse_i64(line);
         x.push(n);
     }
-    for i in 0..x.len() {
-        for j in 0..i {
-            if x[i] + x[j] == 2020 {
-                return x[i] * x[j];
-            }
-        }
-    }
-    -1
+    let v = x
+        .iter()
+        .cloned()
+        .combinations(2)
+        .filter(|it| it.iter().sum::<i64>() == 2020)
+        .next()
+        .unwrap();
+    v[0] * v[1]
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
@@ -32,16 +33,14 @@ pub fn part2(lines: &Vec<String>) -> i64 {
         let n = parse_i64(line);
         x.push(n);
     }
-    for i in 0..x.len() {
-        for j in 0..i {
-            for k in 0..j {
-                if x[i] + x[j] + x[k] == 2020 {
-                    return x[i] * x[j] * x[k];
-                }
-            }
-        }
-    }
-    -1
+    let v = x
+        .iter()
+        .cloned()
+        .combinations(3)
+        .filter(|it| it.iter().sum::<i64>() == 2020)
+        .next()
+        .unwrap();
+    v[0] * v[1] * v[2]
 }
 
 #[cfg(test)]
