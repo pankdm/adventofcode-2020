@@ -33,14 +33,20 @@ pub fn part2(lines: &Vec<String>) -> i64 {
         let n = parse_i64(line);
         x.push(n);
     }
-    let v = x
+    let res = x
         .iter()
         .cloned()
-        .combinations(3)
-        .filter(|it| it.iter().sum::<i64>() == 2020)
+        .tuple_combinations()
+        .filter_map(|(a, b, c)| {
+            if a + b + c == 2020 {
+                Some(a * b * c)
+            } else {
+                None
+            }
+        })
         .next()
         .unwrap();
-    v[0] * v[1] * v[2]
+    res
 }
 
 #[cfg(test)]
