@@ -23,6 +23,7 @@ pub fn part1(lines: &Vec<String>) -> i64 {
             }
         }
     }
+    -1
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
@@ -40,6 +41,7 @@ pub fn part2(lines: &Vec<String>) -> i64 {
             }
         }
     }
+    -1
 }
 
 #[cfg(test)]
@@ -48,8 +50,15 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_foo() {
-        assert_eq!(1 + 1, 2);
+    fn test_part1() {
+        let lines = read_input("input/day01/in.txt");
+        assert_eq!(part1(&lines), 960075);
+    }
+
+    #[test]
+    fn test_part2() {
+        let lines = read_input("input/day01/in.txt");
+        assert_eq!(part2(&lines), 212900130);
     }
 }
 

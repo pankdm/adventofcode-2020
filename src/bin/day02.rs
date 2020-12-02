@@ -30,7 +30,6 @@ pub fn part1(lines: &Vec<String>) -> i64 {
             res += 1;
         }
     }
-
     res
 }
 
@@ -42,8 +41,8 @@ pub fn part2(lines: &Vec<String>) -> i64 {
         let a = parse_i64(&nums[0]) - 1;
         let b = parse_i64(&nums[1]) - 1;
         let ch = parts[1].chars().nth(0).unwrap();
-        let a1 = parts[2].chars().nth(a as usize).unwrap_or('_');
-        let b1 = parts[2].chars().nth(b as usize).unwrap_or('_');
+        let a1 = parts[2].chars().nth(a as usize).unwrap();
+        let b1 = parts[2].chars().nth(b as usize).unwrap();
         let mut count = 0;
         if a1 == ch {
             count += 1;
@@ -65,8 +64,15 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_foo() {
-        assert_eq!(1 + 1, 2);
+    fn test_part1() {
+        let lines = read_input("input/day02/in.txt");
+        assert_eq!(part1(&lines), 465);
+    }
+
+    #[test]
+    fn test_part2() {
+        let lines = read_input("input/day02/in.txt");
+        assert_eq!(part2(&lines), 294);
     }
 }
 
