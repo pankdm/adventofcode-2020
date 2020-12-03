@@ -18,20 +18,20 @@ pub fn part1(lines: &Vec<String>) -> i64 {
 
 fn check_slope(lines: &Vec<String>, c: usize, r: usize) -> i64 {
     let mut res = 0;
-    let mut row = r;
-    let mut col = c;
+    let mut row = 0;
+    let mut col = 0;
 
+    let map = to_vec_char(lines);
     loop {
-        if row >= lines.len() {
+        if row >= map.len() {
             return res;
         }
-        col = col % lines[row].len();
-        let ch = lines[row].chars().nth(col).unwrap();
-        if ch == '#' {
+        if map[row][col] == '#' {
             res += 1;
         }
         row += r;
         col += c;
+        col = col % map[0].len();
     }
 }
 

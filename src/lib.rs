@@ -14,6 +14,10 @@ pub fn read_input(filename: &str) -> Vec<String> {
     return res;
 }
 
+pub fn to_vec_char(lines: &Vec<String>) -> Vec<Vec<char>> {
+    lines.iter().map(|x| x.chars().collect()).collect()
+}
+
 pub fn parse_i64(s: &String) -> i64 {
     match s.parse::<i64>() {
         Err(e) => {
