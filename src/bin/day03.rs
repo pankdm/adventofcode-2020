@@ -23,25 +23,28 @@ fn check_slope(lines: &Vec<String>, c: usize, r: usize) -> i64 {
 
     let map = to_vec_char(lines);
     loop {
+        row += r;
+        col += c;
         if row >= map.len() {
             return res;
         }
-        if map[row][col] == '#' {
+        if map[row][col % map[row].len()] == '#' {
             res += 1;
         }
-        row += r;
-        col += c;
-        col = col % map[0].len();
     }
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 1;
-    res *= check_slope(lines, 1, 1);
-    res *= check_slope(lines, 3, 1);
-    res *= check_slope(lines, 5, 1);
-    res *= check_slope(lines, 7, 1);
-    res *= check_slope(lines, 1, 2);
+    // Right 1, down 1.
+    // Right 3, down 1. (This is the slope you already checked.)
+    // Right 5, down 1.
+    // Right 7, down 1.
+    // Right 1, down 2.
+    let args = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)];
+    for (c, r) in args.iter() {
+        res *= check_slope(lines, *c, *r);
+    }
     res
 }
 
