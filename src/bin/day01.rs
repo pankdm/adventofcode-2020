@@ -48,6 +48,10 @@ pub fn part2(lines: &Vec<String>) -> i64 {
     res
 }
 
+pub fn read_main_input() -> Vec<String> {
+    read_input("input/day01/in.txt")
+}
+
 #[cfg(test)]
 mod tests {
     #[allow(unused_imports)]
@@ -55,19 +59,19 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let lines = read_input("input/day01/in.txt");
+        let lines = read_main_input();
         assert_eq!(part1(&lines), 960075);
     }
 
     #[test]
     fn test_part2() {
-        let lines = read_input("input/day01/in.txt");
+        let lines = read_main_input();
         assert_eq!(part2(&lines), 212900130);
     }
 }
 
 fn main() {
-    let lines = read_input("input/day01/in.txt");
+    let lines = read_main_input();
 
     println!("part1 = {}", part1(&lines));
     println!("part2 = {}", part2(&lines));
