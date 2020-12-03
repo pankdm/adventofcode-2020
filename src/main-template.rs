@@ -15,13 +15,18 @@ use aoc::*;
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     // TODO: code here
-    res
+    -1
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     // TODO: code here
-    res
+    -1
+}
+
+pub fn read_main_input() -> Vec<String> {
+    // read_input("input/dayXX/in.txt")
+    unreachable!()
 }
 
 #[cfg(test)]
@@ -30,13 +35,20 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_foo() {
-        assert_eq!(1 + 1, 2);
+    fn test_part1() {
+        let lines = read_main_input();
+        assert_eq!(part1(&lines), -1);
+    }
+
+    #[test]
+    fn test_part2() {
+        let lines = read_main_input();
+        assert_eq!(part2(&lines), -1);
     }
 }
 
 fn main() {
-    let lines = read_input("input/day00/in.txt");
+    let lines = read_main_input();
 
     println!("part1 = {}", part1(&lines));
     // println!("part2 = {}", part2(&lines));

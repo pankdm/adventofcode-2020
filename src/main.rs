@@ -15,13 +15,13 @@ use aoc::*;
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     // TODO: code here
-    res
+    -1
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     // TODO: code here
-    res
+    -1
 }
 
 pub fn read_main_input() -> Vec<String> {
