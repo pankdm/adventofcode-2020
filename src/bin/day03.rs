@@ -45,11 +45,9 @@ pub fn part2(lines: &Vec<String>) -> i64 {
     res
 }
 
-
 pub fn read_main_input() -> Vec<String> {
     read_input("input/day03/in.txt")
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -66,7 +64,8 @@ mod tests {
     fn test_part2() {
         let lines = read_main_input();
         assert_eq!(part2(&lines), 2655892800);
-    }}
+    }
+}
 
 fn main() {
     let lines = read_main_input();
