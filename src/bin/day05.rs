@@ -60,6 +60,30 @@ pub fn part2(lines: &Vec<String>) -> i64 {
     unreachable!();
 }
 
+fn get_seat_id_bin(s: &String) -> i64 {
+    let x: String = s
+        .chars()
+        .map(|c| match c {
+            'B' | 'R' => '1',
+            _ => '0',
+        })
+        .collect();
+    isize::from_str_radix(&x, 2).unwrap() as i64
+}
+
+pub fn part2_alt(lines: &Vec<String>) -> i64 {
+    let all: Vec<_> = lines.iter().map(|x| get_seat_id_bin(x)).collect();
+    let max = *all.iter().max().unwrap();
+    let min = *all.iter().min().unwrap();
+
+    for s in min..=max {
+        if !all.contains(&s) {
+            return s;
+        }
+    }
+    unreachable!();
+}
+
 #[cfg(test)]
 mod tests {
     #[allow(unused_imports)]
@@ -88,4 +112,5 @@ fn main() {
 
     println!("part1 = {}", part1(&lines));
     println!("part2 = {}", part2(&lines));
+    println!("part2 alt = {}", part2_alt(&lines));
 }
