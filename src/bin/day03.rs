@@ -21,7 +21,7 @@ fn check_slope(lines: &Vec<String>, c: usize, r: usize) -> i64 {
     let mut row = 0;
     let mut col = 0;
 
-    let map = to_vec_char(lines);
+    let map = to_vv_char(lines);
     loop {
         row += r;
         col += c;

@@ -12,7 +12,17 @@ use serde_scan;
 extern crate aoc;
 use aoc::*;
 
-pub fn part1(lines_: &Vec<String>) -> i64 {
+fn check_pass1(fields: &HashMap<String, String>) -> bool {
+    let required = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
+    for r in required.iter() {
+        if !fields.contains_key(&r.to_string()) {
+            return false;
+        }
+    }
+    true
+}
+
+pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
 
     // byr (Birth Year)
@@ -23,39 +33,35 @@ pub fn part1(lines_: &Vec<String>) -> i64 {
     // ecl (Eye Color)
     // pid (Passport ID)
     // cid (Country ID)
-    let mut lines = lines_.clone();
-    lines.push("".to_string());
 
-    let required = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
-
-    let mut inside = false;
+    let mut index = 0;
     let mut fields = HashMap::new();
-    for line in lines.iter() {
-        let parts = split_string(line, " ");
-        if line.len() == 0 || parts.is_empty() {
-            let mut ok = true;
-            // println!("  checking {:?}", fields);
-            for f in required.iter() {
-                if !fields.contains_key(&f.to_string()) {
-                    ok = false;
-                }
-            }
-            if ok {
+    loop {
+        let line = if index < lines.len() {
+            lines[index].clone()
+        } else {
+            "".to_string()
+        };
+        if line.is_empty() {
+            if check_pass1(&fields) {
                 res += 1;
             }
             fields = HashMap::new();
-            continue;
+        } else {
+            let parts = split_string(&line, " ");
+            // println!("parts = {:?}", parts);
+            for part in parts.iter() {
+                let kv = split_string(part, ":");
+                fields.insert(kv[0].clone(), kv[1].clone());
+            }
         }
-
-        // println!("parts = {:?}", parts);
-        for part in parts.iter() {
-            let kv = split_string(part, ":");
-            fields.insert(kv[0].clone(), kv[1].clone());
+        if index >= lines.len() {
+            break;
         }
+        index += 1;
     }
     res
 }
-
 
 fn is_all_digits(s: &String) -> bool {
     for c in s.chars() {
@@ -95,7 +101,7 @@ fn check_hcl(s: &String) -> bool {
     }
     for i in 1..s.len() {
         let ch = s.as_bytes()[i] as char;
-        if ! (('0' <= ch && ch <= '9') || ('a' <= ch && ch <= 'f')) {
+        if !(('0' <= ch && ch <= '9') || ('a' <= ch && ch <= 'f')) {
             return false;
         }
     }
@@ -103,16 +109,11 @@ fn check_hcl(s: &String) -> bool {
 }
 
 fn check_ecl(s: &String) -> bool {
-    let opts = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
-    for opt in opts.iter() {
-        if s == opt {
-            return true;
-        }
-    }
-    return false;
+    let opts = split_string(&"amb blu brn gry grn hzl oth".to_string(), " ");
+    opts.contains(s)
 }
 
-fn check_pass(fields: &HashMap<String, String>) -> bool {
+fn check_pass2(fields: &HashMap<String, String>) -> bool {
     // byr (Birth Year) - four digits; at least 1920 and at most 2002.
     // iyr (Issue Year) - four digits; at least 2010 and at most 2020.
     // eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
@@ -125,21 +126,22 @@ fn check_pass(fields: &HashMap<String, String>) -> bool {
     // cid (Country ID) - ignored, missing or not.
 
     let required = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
-    for f in required.iter() {
-        let ff = f.to_string();
-        if !fields.contains_key(&ff) {
+    for r in required.iter() {
+        if !fields.contains_key(&r.to_string()) {
             return false;
         }
-        let v = &fields[&ff];
-        let ok = match f {
-            &"byr" => check_digits(v, 1920, 2002),
-            &"iyr" => check_digits(v, 2010, 2020),
-            &"eyr" => check_digits(v, 2020, 2030),
-            &"hgt" => check_hgt(v),
-            &"hcl" => check_hcl(v),
-            &"ecl" => check_ecl(v),
-            &"pid" => v.len() == 9 && is_all_digits(v),
-            _ => unreachable!("field: {}", f),
+    }
+
+    for (key, v) in fields.iter() {
+        let ok = match key.as_str() {
+            "byr" => check_digits(v, 1920, 2002),
+            "iyr" => check_digits(v, 2010, 2020),
+            "eyr" => check_digits(v, 2020, 2030),
+            "hgt" => check_hgt(v),
+            "hcl" => check_hcl(v),
+            "ecl" => check_ecl(v),
+            "pid" => v.len() == 9 && is_all_digits(v),
+            _ => true,
         };
         if !ok {
             return false;
@@ -148,7 +150,7 @@ fn check_pass(fields: &HashMap<String, String>) -> bool {
     return true;
 }
 
-pub fn part2(lines_: &Vec<String>) -> i64 {
+pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
 
     // byr (Birth Year)
@@ -159,33 +161,35 @@ pub fn part2(lines_: &Vec<String>) -> i64 {
     // ecl (Eye Color)
     // pid (Passport ID)
     // cid (Country ID)
-    let mut lines = lines_.clone();
-    lines.push("".to_string());
 
-
-    let mut inside = false;
+    let mut index = 0;
     let mut fields = HashMap::new();
-    for line in lines.iter() {
-        let parts = split_string(line, " ");
-        if line.len() == 0 || parts.is_empty() {
-            // println!("  checking {:?}", fields);
-            let mut ok = check_pass(&fields);
-            if ok {
+    loop {
+        let line = if index < lines.len() {
+            lines[index].clone()
+        } else {
+            "".to_string()
+        };
+        if line.is_empty() {
+            if check_pass2(&fields) {
                 res += 1;
             }
             fields = HashMap::new();
-            continue;
+        } else {
+            let parts = split_string(&line, " ");
+            // println!("parts = {:?}", parts);
+            for part in parts.iter() {
+                let kv = split_string(part, ":");
+                fields.insert(kv[0].clone(), kv[1].clone());
+            }
         }
-
-        // println!("parts = {:?}", parts);
-        for part in parts.iter() {
-            let kv = split_string(part, ":");
-            fields.insert(kv[0].clone(), kv[1].clone());
+        if index >= lines.len() {
+            break;
         }
+        index += 1;
     }
     res
 }
-
 
 pub fn read_main_input() -> Vec<String> {
     read_input("input/day04/in.txt")
@@ -200,20 +204,19 @@ mod tests {
     #[test]
     fn test_part1() {
         let lines = read_main_input();
-        assert_eq!(part1(&lines), -1);
+        assert_eq!(part1(&lines), 260);
     }
 
     #[test]
     fn test_part2() {
         let lines = read_main_input();
-        assert_eq!(part2(&lines), -1);
+        assert_eq!(part2(&lines), 153);
     }
 }
 
 fn main() {
     let lines = read_main_input();
     // let lines = read_input("input/day04/t1.txt");
-
 
     println!("part1 = {}", part1(&lines));
     println!("part2 = {}", part2(&lines));

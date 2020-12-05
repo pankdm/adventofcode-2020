@@ -14,7 +14,7 @@ pub fn read_input(filename: &str) -> Vec<String> {
     return res;
 }
 
-pub fn to_vec_char(lines: &Vec<String>) -> Vec<Vec<char>> {
+pub fn to_vv_char(lines: &Vec<String>) -> Vec<Vec<char>> {
     lines.iter().map(|x| x.chars().collect()).collect()
 }
 
