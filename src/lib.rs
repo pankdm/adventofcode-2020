@@ -14,6 +14,10 @@ pub fn read_input(filename: &str) -> Vec<String> {
     return res;
 }
 
+pub fn to_v_char(line: &String) -> Vec<char> {
+    line.chars().collect()
+}
+
 pub fn to_vv_char(lines: &Vec<String>) -> Vec<Vec<char>> {
     lines.iter().map(|x| x.chars().collect()).collect()
 }
