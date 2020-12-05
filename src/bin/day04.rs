@@ -64,12 +64,7 @@ pub fn part1(lines: &Vec<String>) -> i64 {
 }
 
 fn is_all_digits(s: &String) -> bool {
-    for c in s.chars() {
-        if !c.is_numeric() {
-            return false;
-        }
-    }
-    return true;
+    s.chars().all(|c| c.is_numeric())
 }
 
 fn check_digits(s: &String, min: i64, max: i64) -> bool {
@@ -82,10 +77,10 @@ fn check_digits(s: &String, min: i64, max: i64) -> bool {
 
 fn check_hgt(s: &String) -> bool {
     if s.ends_with("cm") {
-        let prefix = s.as_str()[0..s.len() - 2].to_string();
+        let prefix = s[..s.len() - 2].to_string();
         return check_digits(&prefix, 150, 193);
     } else if s.ends_with("in") {
-        let prefix = s.as_str()[0..s.len() - 2].to_string();
+        let prefix = s[..s.len() - 2].to_string();
         return check_digits(&prefix, 59, 76);
     } else {
         return false;
