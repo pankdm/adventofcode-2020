@@ -12,71 +12,43 @@ use serde_scan;
 extern crate aoc;
 use aoc::*;
 
-pub fn part1(lines: &Vec<String>) -> i64 {
-    let mut res = 0;
-    let mut all = Vec::new();
-    for line in lines {
-        let s = to_v_char(line);
-        let mut lo = 0;
-        let mut hi = 128;
-        for i in 0..7 {
-            let mid = (lo + hi) / 2;
-            let c = s[i];
-            if c == 'F' {
-                hi = mid;
-            } else {
-                lo = mid;
-            }
+pub fn get_seat_id(line: &String) -> i64 {
+    let s = to_v_char(line);
+    let mut lo = 0;
+    let mut hi = 128;
+    for i in 0..7 {
+        let mid = (lo + hi) / 2;
+        let c = s[i];
+        if c == 'F' {
+            hi = mid;
+        } else {
+            lo = mid;
         }
-
-        let mut clo = 0;
-        let mut chi = 8;
-        for i in 0..3 {
-            let mid = (clo + chi) / 2;
-            let c = s[7 + i];
-            if c == 'L' {
-                chi = mid;
-            } else {
-                clo = mid;
-            }
-        }
-        let id = lo * 8 + clo;
-        all.push(id as i64);
     }
-    *all.iter().max().unwrap()
+
+    let mut clo = 0;
+    let mut chi = 8;
+    for i in 0..3 {
+        let mid = (clo + chi) / 2;
+        let c = s[7 + i];
+        if c == 'L' {
+            chi = mid;
+        } else {
+            clo = mid;
+        }
+    }
+    let id = lo * 8 + clo;
+    id
+}
+
+pub fn part1(lines: &Vec<String>) -> i64 {
+    let all: Vec<_> = lines.iter().map(|x| get_seat_id(x)).collect();
+    let max = *all.iter().max().unwrap();
+    max
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
-    let mut res = 0;
-    let mut all = Vec::new();
-    for line in lines {
-        let s = to_v_char(line);
-        let mut lo = 0;
-        let mut hi = 128;
-        for i in 0..7 {
-            let mid = (lo + hi) / 2;
-            let c = s[i];
-            if c == 'F' {
-                hi = mid;
-            } else {
-                lo = mid;
-            }
-        }
-
-        let mut clo = 0;
-        let mut chi = 8;
-        for i in 0..3 {
-            let mid = (clo + chi) / 2;
-            let c = s[7 + i];
-            if c == 'L' {
-                chi = mid;
-            } else {
-                clo = mid;
-            }
-        }
-        let id = lo * 8 + clo;
-        all.push(id as i64);
-    }
+    let all: Vec<_> = lines.iter().map(|x| get_seat_id(x)).collect();
     let max = *all.iter().max().unwrap();
     let min = *all.iter().min().unwrap();
 
@@ -85,7 +57,7 @@ pub fn part2(lines: &Vec<String>) -> i64 {
             return s;
         }
     }
-    -1
+    unreachable!();
 }
 
 #[cfg(test)]
