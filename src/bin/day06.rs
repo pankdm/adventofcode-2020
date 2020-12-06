@@ -24,11 +24,6 @@ pub fn part2(lines: &Vec<String>) -> i64 {
     -1
 }
 
-pub fn read_main_input() -> Vec<String> {
-    // read_input("input/dayXX/in.txt")
-    unreachable!()
-}
-
 #[cfg(test)]
 mod tests {
     #[allow(unused_imports)]
@@ -45,6 +40,11 @@ mod tests {
         let lines = read_main_input();
         assert_eq!(part2(&lines), -1);
     }
+}
+
+pub fn read_main_input() -> Vec<String> {
+    read_input("input/day06/in.txt")
+    // unreachable!()
 }
 
 fn main() {
