@@ -24,20 +24,23 @@ pub fn part1(data: &str) -> i64 {
 }
 
 pub fn part2(data: &str) -> i64 {
-    let mut res = 0;
-    for lines in data
-        .trim()
+    data.trim()
         .split("\n\n")
-        .map(|x| split_string(&x.to_string(), "\n"))
-    {
-        let mut set: HashSet<_> = lines[0].chars().collect();
-        for line in &lines[1..] {
-            let other_set: HashSet<_> = line.chars().collect();
-            set = set.intersection(&other_set).cloned().collect()
-        }
-        res += set.len() as i64;
-    }
-    res
+        .map(|x| x.split("\n"))
+        .map(|lines| {
+            let sets: Vec<_> = lines
+                .map(|x| {
+                    let set: HashSet<_> = x.chars().collect();
+                    set
+                })
+                .collect();
+            sets.iter()
+                .fold(sets[0].clone(), |acc, s| {
+                    acc.intersection(&s).copied().collect()
+                })
+                .len() as i64
+        })
+        .sum()
 }
 
 #[cfg(test)]
