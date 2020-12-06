@@ -12,85 +12,30 @@ use serde_scan;
 extern crate aoc;
 use aoc::*;
 
-
-fn process_group(g: &Vec<String>) -> i64 {
-    // println!("g = {:?}", g);
-    let mut r = HashMap::new();
-    for line in g {
-        for c in line.chars() {
-            r.insert(c, 1);
-        }
-    }
-    r.len() as i64
+pub fn part1(data: &str) -> i64 {
+    data.trim()
+        .split("\n\n")
+        .map(|x| x.replace("\n", ""))
+        .map(|x| {
+            let set: HashSet<_> = x.chars().collect();
+            set.len() as i64
+        })
+        .sum()
 }
 
-pub fn part1(lines: &Vec<String>) -> i64 {
+pub fn part2(data: &str) -> i64 {
     let mut res = 0;
-    let mut index = 0;
-
-    let mut group = Vec::new();
-    loop {
-        let line = if index < lines.len() {
-            lines[index].clone()
-        } else {
-            "".to_string()
-        };
-        if line.is_empty() {
-            res += process_group(&group);
-            group = Vec::new();
-        } else {
-            group.push(line);
+    for lines in data
+        .trim()
+        .split("\n\n")
+        .map(|x| split_string(&x.to_string(), "\n"))
+    {
+        let mut set: HashSet<_> = lines[0].chars().collect();
+        for line in &lines[1..] {
+            let other_set: HashSet<_> = line.chars().collect();
+            set = set.intersection(&other_set).cloned().collect()
         }
-        if index >= lines.len() {
-            break
-        }
-        index += 1;
-    }
-    res as i64
-}
-
-pub fn part2(lines: &Vec<String>) -> i64 {
-    let mut res = 0;
-    let mut index = 0;
-
-    let mut group = Vec::new();
-    loop {
-        let line = if index < lines.len() {
-            lines[index].clone()
-        } else {
-            "".to_string()
-        };
-        if line.is_empty() {
-            res += process_group2(&group);
-            group = Vec::new();
-        } else {
-            group.push(line);
-        }
-        if index >= lines.len() {
-            break
-        }
-        index += 1;
-    }
-    res as i64
-}
-
-fn process_group2(g: &Vec<String>) -> i64 {
-    // println!("g = {:?}", g);
-    let mut r = HashMap::new();
-    for line in g {
-        for c in line.chars() {
-            if !r.contains_key(&c) {
-                r.insert(c, 1);
-            } else {
-                r.insert(c, r[&c] + 1);
-            }
-        }
-    }
-    let mut res = 0;
-    for (k, v) in r.iter() {
-        if *v as i64 == g.len() as i64 {
-            res += 1;
-        }
+        res += set.len() as i64;
     }
     res
 }
@@ -102,25 +47,26 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let lines = read_main_input();
-        assert_eq!(part1(&lines), 6763);
+        let data = read_main_input();
+        assert_eq!(part1(&data), 6763);
     }
 
     #[test]
     fn test_part2() {
-        let lines = read_main_input();
-        assert_eq!(part2(&lines), 3512);
+        let data = read_main_input();
+        assert_eq!(part2(&data), 3512);
     }
 }
 
-pub fn read_main_input() -> Vec<String> {
-    read_input("input/day06/in.txt")
+pub fn read_main_input() -> String {
+    include_str!("../../input/day06/in.txt").to_string()
+    // read_input("input/day06/in.txt")
     // unreachable!()
 }
 
 fn main() {
-    let lines = read_main_input();
+    let data = read_main_input();
 
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
+    println!("part1 = {}", part1(&data));
+    println!("part2 = {}", part2(&data));
 }
