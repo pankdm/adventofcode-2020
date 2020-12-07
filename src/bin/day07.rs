@@ -19,14 +19,16 @@ fn extract_bag_color(s: &String) -> String {
         .to_string()
 }
 
-pub fn part1(lines: &Vec<String>) -> i64 {
-    let mut res = 0;
+struct Rule {
+    input_bag: String,
+    output_bags: Vec<(i64, String)>,
+}
 
-    let mut g = HashMap::new();
-
-    for _line in lines {
-        let line = _line[.._line.len() - 1].to_string();
-        let split = split_string(&line, " contain ");
+fn parse_input(lines: &Vec<String>) -> Vec<Rule> {
+    let mut res = Vec::new();
+    for line in lines {
+        let line = line.trim_end_matches(".");
+        let split = split_string(&line.to_string(), " contain ");
         let src = split[0].clone();
         let input_bag = extract_bag_color(&src);
 
@@ -35,35 +37,53 @@ pub fn part1(lines: &Vec<String>) -> i64 {
             continue;
         }
         let parts = split_string(&dsts, ", ");
+        let mut output = Vec::new();
         for part in parts.iter() {
             // println!("parts = {:?}, part {}", parts, part);
-            let (num, bag): (i32, String) = serde_scan::scan!("{} {}" <- part).unwrap();
+            let (num, bag): (i64, String) = serde_scan::scan!("{} {}" <- part).unwrap();
             // println!("src = {}: num {} -> {}", src, num, bag);
             let output_bag = extract_bag_color(&bag);
+            output.push((num, output_bag));
+        }
+        res.push(Rule {
+            input_bag: input_bag,
+            output_bags: output,
+        });
+    }
+    res
+}
 
-            g.entry(output_bag)
+fn dfs(now: &String, g: &HashMap<String, Vec<String>>, visited: &mut HashSet<String>) {
+    if !g.contains_key(now) {
+        return;
+    }
+    for next in g[now].iter() {
+        if !visited.contains(next) {
+            visited.insert(next.clone());
+            dfs(&next, g, visited);
+        }
+    }
+}
+
+pub fn part1(lines: &Vec<String>) -> i64 {
+    let mut res = 0;
+
+    let mut g = HashMap::new();
+    let rules = parse_input(lines);
+    for r in rules.iter() {
+        for (num, output) in r.output_bags.iter() {
+            g.entry(output.clone())
                 .or_insert(Vec::new())
-                .push(input_bag.clone());
+                .push(r.input_bag.clone());
         }
     }
 
-    let mut q = VecDeque::new();
-    let mut visited = HashMap::new();
-    q.push_back("shiny gold".to_string());
+    let start = "shiny gold".to_string();
+    let mut visited = HashSet::new();
+    visited.insert(start.clone());
 
-    while !q.is_empty() {
-        let now = q.pop_back().unwrap();
-        if !g.contains_key(&now) {
-            continue;
-        }
-        for next in g[&now].iter() {
-            if !visited.contains_key(&next) {
-                visited.insert(next, 1);
-                q.push_back(next.clone());
-            }
-        }
-    }
-    visited.len() as i64
+    dfs(&start, &g, &mut visited);
+    (visited.len() - 1) as i64
 }
 
 type Graph = HashMap<String, Vec<(i64, String)>>;
@@ -86,29 +106,11 @@ pub fn count_contains(now: &String, g: &Graph, cache: &mut HashMap<String, i64>)
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
 
+    let rules = parse_input(lines);
+
     let mut g = HashMap::new();
-
-    for _line in lines {
-        let line = _line[.._line.len() - 1].to_string();
-        let split = split_string(&line, " contain ");
-        let src = split[0].clone();
-        let input_bag = extract_bag_color(&src);
-
-        let dsts = split[1].clone();
-        if dsts == "no other bags" {
-            continue;
-        }
-        let parts = split_string(&dsts, ", ");
-        for part in parts.iter() {
-            // println!("parts = {:?}, part {}", parts, part);
-            let (num, bag): (i64, String) = serde_scan::scan!("{} {}" <- part).unwrap();
-            // println!("src = {}: num {} -> {}", src, num, bag);
-            let output_bag = extract_bag_color(&bag);
-
-            g.entry(input_bag.clone())
-                .or_insert(Vec::new())
-                .push((num, output_bag.clone()));
-        }
+    for r in rules {
+        g.insert(r.input_bag, r.output_bags);
     }
 
     let mut cache = HashMap::new();
