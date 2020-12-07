@@ -34,7 +34,7 @@ pub fn parse_i64(s: &String) -> i64 {
     }
 }
 
-pub fn split_string(s: &String, pattern: &str) -> Vec<String> {
+pub fn split_string(s: &str, pattern: &str) -> Vec<String> {
     let mut res = Vec::new();
     for part in s.split(pattern) {
         res.push(part.to_string());

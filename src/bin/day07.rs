@@ -5,6 +5,7 @@
 #![allow(unused_mut)]
 
 // Some basic includes to alwawys include
+use regex::Regex;
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::fs;
 
@@ -13,7 +14,7 @@ use serde_scan;
 extern crate aoc;
 use aoc::*;
 
-fn extract_bag_color(s: &String) -> String {
+fn extract_bag_color(s: &str) -> String {
     s.trim_end_matches(" bag")
         .trim_end_matches(" bags")
         .to_string()
@@ -27,16 +28,17 @@ struct Rule {
 fn parse_input(lines: &Vec<String>) -> Vec<Rule> {
     let mut res = Vec::new();
     for line in lines {
-        let line = line.trim_end_matches(".");
-        let split = split_string(&line.to_string(), " contain ");
-        let src = split[0].clone();
-        let input_bag = extract_bag_color(&src);
+        let re = Regex::new("(.*) contain (.*)[.]").unwrap();
+        let cap = re.captures(line).unwrap();
+        // println!("matched {:?} and {:?}", cap.get(1).unwrap(), cap.get(2).unwrap());
+        let src = cap.get(1).unwrap().as_str();
+        let input_bag = extract_bag_color(src);
 
-        let dsts = split[1].clone();
+        let dsts = cap.get(2).unwrap().as_str();
         if dsts == "no other bags" {
             continue;
         }
-        let parts = split_string(&dsts, ", ");
+        let parts = split_string(dsts, ", ");
         let mut output = Vec::new();
         for part in parts.iter() {
             // println!("parts = {:?}, part {}", parts, part);
