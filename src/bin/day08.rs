@@ -8,7 +8,6 @@
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::fs;
 
-
 use serde_scan;
 
 extern crate aoc;
