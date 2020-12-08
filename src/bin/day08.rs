@@ -15,117 +15,79 @@ use aoc::*;
 
 #[derive(Debug, Clone)]
 struct Op {
-    cmd: String,
+    name: String,
     value: i64,
+}
+
+fn parse_prog(lines: &Vec<String>) -> Vec<Op> {
+    let mut prog = Vec::new();
+    for line in lines {
+        let parts = split_string(line, " ");
+        prog.push(Op {
+            name: parts[0].clone(),
+            value: parse_i64(&parts[1]),
+        });
+    }
+    prog
 }
 
 fn run_prog(prog: &Vec<Op>) -> (bool, i64) {
     let mut acc = 0;
-    let mut index = 0 as i64;
+    let mut ip = 0;
     let mut visited = HashMap::new();
 
     loop {
-        if index as usize >= prog.len() {
+        if ip as usize >= prog.len() {
             return (true, acc);
         }
-        // println!("at index = {} -> {:?}", index, prog[index as usize]);
-        let key = (index, 0);
+        let key = ip;
         if visited.contains_key(&key) {
             return (false, acc);
         }
         visited.insert(key, true);
-        let p = &prog[index as usize];
-        if p.cmd == "acc" {
-            acc += p.value;
-            index += 1;
-        }
-        if p.cmd == "jmp" {
-            index += p.value;
-            if index < 0 {
-                index = 0;
+        let p = &prog[ip as usize];
+        match p.name.as_str() {
+            "acc" => {
+                acc += p.value;
+                ip += 1;
+            }
+            "jmp" => {
+                ip = (ip + p.value).max(0);
+            }
+            _ => {
+                ip += 1;
             }
         }
-        if p.cmd == "nop" {
-            index += 1;
-        }
     }
-    unreachable!();
 }
 
 pub fn part1(lines: &Vec<String>) -> i64 {
-    let mut res = 0;
-
-    let mut prog = Vec::new();
-    for line in lines {
-        let parts = split_string(line, " ");
-        let cmd = parts[0].clone();
-        let value = parse_i64(&parts[1]);
-        prog.push(Op {
-            cmd: cmd,
-            value: value,
-        });
-    }
-
-    let mut acc = 0;
-    let mut index = 0 as i64;
-    let mut visited = HashMap::new();
-
-    loop {
-        // println!("at index = {} -> {:?}", index, prog[index as usize]);
-        let key = (index, 0);
-        if visited.contains_key(&key) {
-            return acc;
-        }
-        visited.insert(key, true);
-        let p = &prog[index as usize];
-        if p.cmd == "acc" {
-            acc += p.value;
-            index += 1;
-        }
-        if p.cmd == "jmp" {
-            index += p.value;
-            if index < 0 {
-                index = 0;
-            }
-        }
-        if p.cmd == "nop" {
-            index += 1;
-        }
-    }
-
-    // TODO: code here
-    -1
+    let prog = parse_prog(lines);
+    let (ok, acc) = run_prog(&prog);
+    acc
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
-    let mut res = 0;
-
-    let mut prog = Vec::new();
-    for line in lines {
-        let parts = split_string(line, " ");
-        let cmd = parts[0].clone();
-        let value = parse_i64(&parts[1]);
-        prog.push(Op {
-            cmd: cmd,
-            value: value,
-        });
-    }
-
+    let prog = parse_prog(lines);
     for index in 0..prog.len() {
         let p = &prog[index];
         let mut new_prog = prog.clone();
-        if p.cmd == "nop" {
-            new_prog[index].cmd = "jmp".to_string();
-        } else if p.cmd == "jmp" {
-            new_prog[index].cmd = "nop".to_string();
+        match p.name.as_str() {
+            "nop" => {
+                new_prog[index].name = "jmp".to_string();
+            }
+            "jmp" => {
+                new_prog[index].name = "nop".to_string();
+            }
+            _ => {
+                continue;
+            }
         }
         let (ok, acc) = run_prog(&new_prog);
         if ok {
             return acc;
         }
     }
-
-    // TODO: code here
     -1
 }
 
