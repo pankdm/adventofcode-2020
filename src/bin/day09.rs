@@ -8,37 +8,34 @@
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::fs;
 
-
 use serde_scan;
 
 extern crate aoc;
 use aoc::*;
 
-
 // const N: usize = 25;
 const N: usize = 25;
 
-pub fn is_valid(x: i64, v: &Vec<i64>, start: usize, end: usize) -> bool {
-    for i in start..end.min(v.len()) {
-        for j in start..i {
-            if v[i] + v[j] == x {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
-    let v: Vec<_> = lines.iter().map(|s| parse_i64(s)).collect();
-
-    let mut start = Vec::new();
-    for i in 0..N{
-        start.push(v[i]);
+    let mut v = Vec::new();
+    for line in lines {
+        v.push(parse_i64(line));
     }
+
+    let is_valid = |x, start, end| {
+        for i in start..end {
+            for j in start..i {
+                if v[i] + v[j] == x {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
     for i in N..v.len() {
-        if !is_valid(v[i], &v, i - N, i) {
+        if !is_valid(v[i], i - N, i) {
             return v[i];
         }
     }
@@ -50,17 +47,10 @@ pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     let v: Vec<_> = lines.iter().map(|s| parse_i64(s)).collect();
 
-
-    let mut start = Vec::new();
-    for i in 0..N{
-        start.push(v[i]);
-    }
-
     let ans = 731031916;
-
     for i in 0..v.len() {
         for j in i + 1..v.len() {
-            let s:i64 = v[i..=j].iter().sum();
+            let s: i64 = v[i..=j].iter().sum();
             if s == ans {
                 let min = v[i..=j].iter().min().unwrap();
                 let max = v[i..=j].iter().max().unwrap();
