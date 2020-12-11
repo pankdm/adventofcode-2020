@@ -19,7 +19,7 @@ pub fn to_v_char(line: &str) -> Vec<char> {
 }
 
 pub fn to_vv_char(lines: &Vec<String>) -> Vec<Vec<char>> {
-    lines.iter().map(|x| x.chars().collect()).collect()
+    lines.iter().map(|x| x.trim().chars().collect()).collect()
 }
 
 pub fn parse_i64(s: &str) -> i64 {
