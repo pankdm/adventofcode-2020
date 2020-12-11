@@ -17,117 +17,103 @@ pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     let mut grid = to_vv_char(lines);
 
-    let d: Vec<i64> = vec![-1, 0, 1];
-
+    let mut i = 0;
     loop {
+        // println!("iter = {}", i);
+        i += 1;
         let mut new_grid = grid.clone();
         let mut changed = false;
-        let mut res = 0;
         for y in 0..new_grid.len() {
             for x in 0..new_grid[y].len() {
                 let mut occupied = 0;
-                if new_grid[y][x] == '#' {
-                    res += 1;
-                }
-                for dx in d.iter() {
-                    for dy in d.iter() {
-                        if *dx == 0 && *dy == 0 {
-                            continue;
-                        }
-                        let y1 = y as i64 + dy;
-                        let x1 = x as i64 + dx;
-                        if 0 <= x1 && x1 < grid[y].len() as i64 && 0 <= y1 && y1 < grid.len() as i64
-                        {
-                            if grid[y1 as usize][x1 as usize] == '#' {
-                                occupied += 1;
-                            }
-                        }
+                let v = Vector2d::new(x as i64, y as i64);
+                for dv in neighbours8() {
+                    let v1 = v + dv;
+                    if !grid.inside(v1) {
+                        continue;
+                    }
+                    if grid.get(v1) == '#' {
+                        occupied += 1;
                     }
                 }
-                let c = new_grid[y][x];
+                let c = new_grid.get(v);
                 if c == 'L' && occupied == 0 {
                     changed = true;
-                    new_grid[y][x] = '#';
+                    new_grid.set(v, '#');
                 }
                 if c == '#' && occupied >= 4 {
                     changed = true;
-                    new_grid[y][x] = 'L';
+                    new_grid.set(v, 'L');
                 }
             }
         }
         if !changed {
-            return res;
+            break;
         }
         grid = new_grid;
     }
+    grid.iter()
+        .flat_map(|x| x.iter())
+        .filter(|x| **x == '#')
+        .count() as i64
 }
+
 
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     let mut grid = to_vv_char(lines);
 
-    let d: Vec<i64> = vec![-1, 0, 1];
-
-    let mut iter = 0;
+    let mut i = 0;
     loop {
-        // println!("iter = {}", iter);
-        iter += 1;
+        // println!("iter = {}", i);
+        i += 1;
         let mut new_grid = grid.clone();
         let mut changed = false;
-        let mut res = 0;
         for y in 0..new_grid.len() {
             for x in 0..new_grid[y].len() {
                 let mut occupied = 0;
-                if new_grid[y][x] == '#' {
-                    res += 1;
-                }
-                for dx in d.iter() {
-                    for dy in d.iter() {
-                        if *dx == 0 && *dy == 0 {
-                            continue;
+                let v = Vector2d::new(x as i64, y as i64);
+                for dv in neighbours8() {
+                    let mut iter = 1;
+                    loop {
+                        let v1 = v + iter * dv;
+                        if !grid.inside(v1) {
+                            break;
                         }
-                        let mut iter = 1;
-                        loop {
-                            let y1 = y as i64 + iter * dy;
-                            let x1 = x as i64 + iter * dx;
-                            if 0 <= x1
-                                && x1 < grid[y].len() as i64
-                                && 0 <= y1
-                                && y1 < grid.len() as i64
-                            {
-                                if grid[y1 as usize][x1 as usize] == '#' {
-                                    occupied += 1;
-                                    break;
-                                }
-                                if grid[y1 as usize][x1 as usize] == 'L' {
-                                    break;
-                                }
-                                if grid[y1 as usize][x1 as usize] == '.' {
-                                    iter += 1;
-                                    continue;
-                                }
-                            } else {
+                        match grid.get(v1) {
+                            '#' => {
+                                occupied += 1;
                                 break;
                             }
+                            'L' => {
+                                break;
+                            }
+                            _ => {}
                         }
+                        iter += 1;
                     }
                 }
-                let c = new_grid[y][x];
+                let c = new_grid.get(v);
                 if c == 'L' && occupied == 0 {
                     changed = true;
-                    new_grid[y][x] = '#';
+                    new_grid.set(v, '#');
                 }
                 if c == '#' && occupied >= 5 {
                     changed = true;
-                    new_grid[y][x] = 'L';
+                    new_grid.set(v, 'L');
                 }
             }
         }
         if !changed {
-            return res;
+            break;
         }
         grid = new_grid;
     }
+
+    grid.iter()
+        .flat_map(|x| x.iter())
+        .filter(|x| **x == '#')
+        .count() as i64
 }
 
 #[cfg(test)]

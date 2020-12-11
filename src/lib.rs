@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::ops::{Add, Mul};
 
 pub fn read_input(filename: &str) -> Vec<String> {
     let full_name = format!("{}", filename);
@@ -44,4 +45,78 @@ pub fn split_string(s: &str, pattern: &str) -> Vec<String> {
 
 pub fn to_lines(s: &str) -> Vec<String> {
     split_string(&s.trim().to_string(), "\n")
+}
+
+
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
+pub struct Vector2d {
+    x: i64,
+    y: i64,
+}
+
+impl Vector2d {
+    pub fn new(x: i64, y: i64) -> Self {
+        Vector2d { x: x, y: y }
+    }
+}
+
+impl Add for Vector2d {
+    type Output = Self;
+    fn add(self, other: Self) -> Self {
+        Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+impl Mul<i64> for Vector2d {
+    type Output = Self;
+    fn mul(self, other: i64) -> Self {
+        Self {
+            x: self.x * other,
+            y: self.y * other,
+        }
+    }
+}
+
+impl Mul<Vector2d> for i64 {
+    type Output = Vector2d;
+    fn mul(self, other: Vector2d) -> Vector2d {
+        other * self
+    }
+}
+
+type Grid = Vec<Vec<char>>;
+
+pub trait GridExt {
+    fn get(&self, v: Vector2d) -> char;
+    fn inside(&self, v: Vector2d) -> bool;
+    fn set(&mut self, v: Vector2d, c: char);
+}
+
+impl GridExt for Grid {
+    fn get(&self, v: Vector2d) -> char {
+        self[v.y as usize][v.x as usize]
+    }
+    fn inside(&self, v: Vector2d) -> bool {
+        0 <= v.y && v.y < self.len() as i64 && 0 <= v.x && v.x < self[v.y as usize].len() as i64
+    }
+    fn set(&mut self, v: Vector2d, c: char) {
+        self[v.y as usize][v.x as usize] = c;
+    }
+}
+
+pub fn neighbours8() -> Vec<Vector2d> {
+    let mut res = Vec::new();
+    let d: Vec<i64> = vec![-1, 0, 1];
+    for dx in d.iter() {
+        for dy in d.iter() {
+            if *dx == 0 && *dy == 0 {
+                continue;
+            }
+            res.push(Vector2d { x: *dx, y: *dy });
+        }
+    }
+    res
 }
