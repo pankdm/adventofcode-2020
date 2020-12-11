@@ -36,7 +36,7 @@ pub fn part1(lines: &Vec<String>) -> i64 {
                         occupied += 1;
                     }
                 }
-                let c = new_grid.get(v);
+                let c = grid.get(v);
                 if c == 'L' && occupied == 0 {
                     changed = true;
                     new_grid.set(v, '#');
@@ -93,7 +93,7 @@ pub fn part2(lines: &Vec<String>) -> i64 {
                         iter += 1;
                     }
                 }
-                let c = new_grid.get(v);
+                let c = grid.get(v);
                 if c == 'L' && occupied == 0 {
                     changed = true;
                     new_grid.set(v, '#');
