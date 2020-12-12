@@ -57,6 +57,18 @@ impl Vector2d {
     pub fn new(x: i64, y: i64) -> Self {
         Vector2d { x: x, y: y }
     }
+    pub fn rotate_left(&self) -> Vector2d {
+        Vector2d {
+            x: -self.y,
+            y: self.x,
+        }
+    }
+    pub fn rotate_right(&self) -> Vector2d {
+        Vector2d {
+            x: self.y,
+            y: -self.x,
+        }
+    }
 }
 
 impl Add for Vector2d {

@@ -21,15 +21,6 @@ use aoc::*;
 // Action L means to turn left the given number of degrees.
 // Action R means to turn right the given number of degrees.
 // Action F means to move forward by the given value in the direction the ship is currently facing.
-
-pub fn rotate_left(v: Vector2d) -> Vector2d {
-    Vector2d::new(-v.y, v.x)
-}
-
-pub fn rotate_right(v: Vector2d) -> Vector2d {
-    Vector2d::new(v.y, -v.x)
-}
-
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
 
@@ -58,23 +49,13 @@ pub fn part1(lines: &Vec<String>) -> i64 {
                 pos.x -= v;
             }
             'L' => {
-                let mut deg = v;
-                loop {
-                    if deg == 0 {
-                        break;
-                    }
-                    dir = rotate_left(dir);
-                    deg -= 90;
+                for i in 0..v / 90 {
+                    dir = dir.rotate_left();
                 }
             }
             'R' => {
-                let mut deg = v;
-                loop {
-                    if deg == 0 {
-                        break;
-                    }
-                    dir = rotate_right(dir);
-                    deg -= 90;
+                for i in 0..v / 90 {
+                    dir = dir.rotate_right();
                 }
             }
             'F' => {
@@ -95,7 +76,6 @@ pub fn part1(lines: &Vec<String>) -> i64 {
 // Action F means to move forward to the waypoint a number of times equal to the given value.
 // The waypoint starts 10 units east and 1 unit north relative to the ship.
 // The waypoint is relative to the ship; that is, if the ship moves, the waypoint moves with it.
-
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
 
@@ -106,51 +86,40 @@ pub fn part2(lines: &Vec<String>) -> i64 {
         actions.push((d, value));
     }
 
-    let mut dir = Vector2d::new(1, 0);
-    let mut ship = Vector2d::new(0, 0);
-    let mut pos = Vector2d::new(10, 1);
+    let mut wpt = Vector2d::new(10, 1);
+    let mut pos = Vector2d::new(0, 0);
 
     for (d, v) in actions {
         match d {
             'N' => {
-                pos.y += v;
+                wpt.y += v;
             }
             'S' => {
-                pos.y -= v;
+                wpt.y -= v;
             }
             'E' => {
-                pos.x += v;
+                wpt.x += v;
             }
             'W' => {
-                pos.x -= v;
+                wpt.x -= v;
             }
             'L' => {
-                let mut deg = v;
-                loop {
-                    if deg == 0 {
-                        break;
-                    }
-                    pos = rotate_left(pos);
-                    deg -= 90;
+                for i in 0..v / 90 {
+                    wpt = wpt.rotate_left();
                 }
             }
             'R' => {
-                let mut deg = v;
-                loop {
-                    if deg == 0 {
-                        break;
-                    }
-                    pos = rotate_right(pos);
-                    deg -= 90;
+                for i in 0..v / 90 {
+                    wpt = wpt.rotate_right();
                 }
             }
             'F' => {
-                ship = ship + pos * v;
+                pos = pos + wpt * v;
             }
             _ => {}
         }
     }
-    ship.x.abs() + ship.y.abs()
+    pos.x.abs() + pos.y.abs()
 }
 
 #[cfg(test)]
