@@ -7,7 +7,7 @@
 // Some basic includes to alwawys include
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::fs;
-
+use std::env;
 
 use serde_scan;
 
@@ -45,13 +45,23 @@ mod tests {
 }
 
 pub fn read_main_input() -> Vec<String> {
-    unreachable!();
-    let input = fs::read_to_string("input/day00/in.txt").unwrap();
+    let input = fs::read_to_string("input/day12/in.txt").unwrap();
     // let input = fs::read_to_string("input/day07/demo.txt").unwrap();
     to_lines(&input)
 }
 
+pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
+    unreachable!();
+    if args.len() <= 1 {
+        return read_main_input();
+    }
+    let input = fs::read_to_string(&args[1]).unwrap();
+    to_lines(&input)
+}
+
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    println!("args: {:?}", args);
     let lines = read_main_input();
 
     println!("part1 = {}", part1(&lines));
