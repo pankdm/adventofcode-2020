@@ -58,7 +58,6 @@ pub fn part1(lines: &Vec<String>) -> i64 {
         .count() as i64
 }
 
-
 pub fn part2(lines: &Vec<String>) -> i64 {
     let mut res = 0;
     let mut grid = to_vv_char(lines);

@@ -47,11 +47,10 @@ pub fn to_lines(s: &str) -> Vec<String> {
     split_string(&s.trim().to_string(), "\n")
 }
 
-
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Vector2d {
-    x: i64,
-    y: i64,
+    pub x: i64,
+    pub y: i64,
 }
 
 impl Vector2d {
