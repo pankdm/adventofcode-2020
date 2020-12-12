@@ -36,18 +36,10 @@ pub fn part1(lines: &Vec<String>) -> i64 {
 
     for (d, v) in actions {
         match d {
-            'N' => {
-                pos.y += v;
-            }
-            'S' => {
-                pos.y -= v;
-            }
-            'E' => {
-                pos.x += v;
-            }
-            'W' => {
-                pos.x -= v;
-            }
+            'N' => pos.y += v,
+            'S' => pos.y -= v,
+            'E' => pos.x += v,
+            'W' => pos.x -= v,
             'L' => {
                 for i in 0..v / 90 {
                     dir = dir.rotate_left();
@@ -58,9 +50,7 @@ pub fn part1(lines: &Vec<String>) -> i64 {
                     dir = dir.rotate_right();
                 }
             }
-            'F' => {
-                pos = pos + dir * v;
-            }
+            'F' => pos = pos + dir * v,
             _ => {}
         }
     }
@@ -91,18 +81,10 @@ pub fn part2(lines: &Vec<String>) -> i64 {
 
     for (d, v) in actions {
         match d {
-            'N' => {
-                wpt.y += v;
-            }
-            'S' => {
-                wpt.y -= v;
-            }
-            'E' => {
-                wpt.x += v;
-            }
-            'W' => {
-                wpt.x -= v;
-            }
+            'N' => wpt.y += v,
+            'S' => wpt.y -= v,
+            'E' => wpt.x += v,
+            'W' => wpt.x -= v,
             'L' => {
                 for i in 0..v / 90 {
                     wpt = wpt.rotate_left();
@@ -113,9 +95,7 @@ pub fn part2(lines: &Vec<String>) -> i64 {
                     wpt = wpt.rotate_right();
                 }
             }
-            'F' => {
-                pos = pos + wpt * v;
-            }
+            'F' => pos = pos + wpt * v,
             _ => {}
         }
     }
