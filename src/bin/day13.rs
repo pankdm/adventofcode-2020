@@ -148,6 +148,37 @@ pub fn part2_crt(line: &str) -> i64 {
     (res % md + md) % md
 }
 
+pub fn part2_sieving(line: &str) -> i64 {
+    let parts = split_string(line, ",");
+
+    let mut buses = Vec::new();
+    for (offset, part) in parts.iter().enumerate() {
+        if part == "x" {
+            continue;
+        }
+        let x = parse_i64(part);
+        buses.push((x, offset as i64));
+    }
+
+    println!(
+        "modules = {:?}",
+        buses.iter().map(|x| x.0).collect::<Vec<_>>()
+    );
+
+    let mut now = 0;
+    let mut step = 1;
+    for (x, offset) in buses {
+        loop {
+            if (now + offset) % x == 0 {
+                break;
+            }
+            now += step;
+        }
+        step *= x;
+    }
+    now
+}
+
 #[cfg(test)]
 mod tests {
     #[allow(unused_imports)]
@@ -194,7 +225,9 @@ fn main() {
     // println!("part1 = {}", part1(&lines));
     // println!("part2 = {:?}", part2(&lines));
     dbg!(part2_crt("17,x,13,19"));
+    dbg!(part2_sieving("17,x,13,19"));
 
     println!("part2 CRT = {:?}", part2_crt(&lines[1]));
+    println!("part2 Sieving = {:?}", part2_sieving(&lines[1]));
     // dbg!(part2_crt(&lines));
 }
