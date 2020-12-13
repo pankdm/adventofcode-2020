@@ -62,7 +62,7 @@ pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
 fn main() {
     let args: Vec<String> = env::args().collect();
     println!("args: {:?}", args);
-    let lines = read_main_input();
+    let lines = read_input_from_args(&args);
 
     println!("part1 = {}", part1(&lines));
     // println!("part2 = {}", part2(&lines));
