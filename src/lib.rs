@@ -131,3 +131,26 @@ pub fn neighbours8() -> Vec<Vector2d> {
     }
     res
 }
+
+// Extended gcd algorithm
+// returns (g, x, y) where
+//  - gcd(a, b) = g
+//  - a * x + b * y = g
+pub fn gcd_ext(a: i64, b: i64) -> (i64, i64, i64) {
+    if a == 0 {
+        return (b, 0, 1);
+    }
+    let (d, x1, y1) = gcd_ext(b % a, a);
+    let x = y1 - (b / a) * x1;
+    let y = x1;
+    return (d, x, y);
+}
+
+// Returns inverse to element a modulo m
+// x * a = 1 (mod m)
+pub fn mod_inverse(a: i64, m: i64) -> i64 {
+    let (g, x, y) = gcd_ext(a, m);
+    assert_eq!(g, 1);
+    // a * x + m * y == 1
+    return x % m;
+}

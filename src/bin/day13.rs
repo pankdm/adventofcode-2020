@@ -17,8 +17,6 @@ use aoc::*;
 use num_bigint::*;
 
 pub fn part1(lines: &Vec<String>) -> i64 {
-    let mut res = 0;
-
     let start = parse_i64(&lines[0]);
     let parts = split_string(&lines[1], ",");
     let mut buses = Vec::new();
@@ -119,10 +117,35 @@ pub fn part2_impl(line: &str) -> String {
 }
 
 pub fn part2(lines: &Vec<String>) -> String {
-    let mut res = 0;
-
     let start = parse_i64(&lines[0]);
     return part2_impl(&lines[1]);
+}
+
+pub fn part2_crt(line: &str) -> i64 {
+    let parts = split_string(line, ",");
+    let mut buses = Vec::new();
+    for (offset, part) in parts.iter().enumerate() {
+        if part == "x" {
+            continue;
+        }
+        let x = parse_i64(part);
+        let a = (-(offset as i64) % x + x) % x;
+        buses.push((x, a));
+    }
+
+    println!("buses = {:?}", buses);
+
+    let md: i64 = buses.iter().map(|x| x.0).product();
+    // println!("mod = {}", md);
+    let mut res = 0;
+    for (x, offset) in buses {
+        let prod = md / x;
+        let inv = mod_inverse(prod, x);
+        // println!("  inverse to {} is {} (mod {})", prod, inv, x);
+        res += offset * inv * prod;
+        res %= md;
+    }
+    (res % md + md) % md
 }
 
 #[cfg(test)]
@@ -168,6 +191,10 @@ fn main() {
     println!("args: {:?}", args);
     let lines = read_input_from_args(&args);
 
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {:?}", part2(&lines));
+    // println!("part1 = {}", part1(&lines));
+    // println!("part2 = {:?}", part2(&lines));
+    dbg!(part2_crt("17,x,13,19"));
+
+    println!("part2 CRT = {:?}", part2_crt(&lines[1]));
+    // dbg!(part2_crt(&lines));
 }
