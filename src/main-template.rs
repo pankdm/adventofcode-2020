@@ -45,13 +45,14 @@ mod tests {
 }
 
 pub fn read_main_input() -> Vec<String> {
-    let input = fs::read_to_string("input/day12/in.txt").unwrap();
+    let input = fs::read_to_string("input/day15/in.txt").unwrap();
     // let input = fs::read_to_string("input/day07/demo.txt").unwrap();
     to_lines(&input)
 }
 
 pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
     unreachable!();
+    println!("args: {:?}", args);
     if args.len() <= 1 {
         return read_main_input();
     }
@@ -61,7 +62,6 @@ pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    println!("args: {:?}", args);
     let lines = read_input_from_args(&args);
 
     println!("part1 = {}", part1(&lines));
