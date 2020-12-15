@@ -149,7 +149,7 @@ pub fn gcd_ext(a: i64, b: i64) -> (i64, i64, i64) {
 // Returns inverse to element a modulo m
 // x * a = 1 (mod m)
 pub fn mod_inverse(a: i64, m: i64) -> i64 {
-    let (g, x, y) = gcd_ext(a, m);
+    let (g, x, _y) = gcd_ext(a, m);
     assert_eq!(g, 1);
     // a * x + m * y == 1
     return x % m;
