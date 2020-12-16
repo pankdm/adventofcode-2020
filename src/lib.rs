@@ -35,6 +35,16 @@ pub fn parse_i64(s: &str) -> i64 {
     }
 }
 
+pub fn parse_ints(s: &str, pattern: &str) -> Vec<i64> {
+    let parts = split_string(s, pattern);
+    let mut nums = Vec::new();
+    // dbg!(parts.clone());
+    for part in parts.iter() {
+        nums.push(parse_i64(part));
+    }
+    nums
+}
+
 pub fn split_string(s: &str, pattern: &str) -> Vec<String> {
     let mut res = Vec::new();
     for part in s.split(pattern) {
