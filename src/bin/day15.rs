@@ -6,8 +6,8 @@
 
 // Some basic includes to alwawys include
 use std::collections::{HashMap, HashSet, VecDeque};
-use std::fs;
 use std::env;
+use std::fs;
 
 use serde_scan;
 
@@ -15,7 +15,7 @@ extern crate aoc;
 use aoc::*;
 
 // If that was the first time the number has been spoken, the current player says 0.
-// Otherwise, the number had been spoken before; the current player 
+// Otherwise, the number had been spoken before; the current player
 // announces how many turns apart the number is from when it was previously spoken.
 
 pub fn part1(lines: &Vec<String>) -> i64 {
