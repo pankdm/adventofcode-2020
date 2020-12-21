@@ -69,7 +69,7 @@ fn matches(rules: &HashMap<i64, Rule>, line: &String) -> bool {
 }
 
 fn matches_0(rules: &mut HashMap<i64, Rule>, line: &String) -> bool {
-    let n = 40;
+    let n = 10;
 
     for n8 in 1..n {
         for n11 in 1..n {
