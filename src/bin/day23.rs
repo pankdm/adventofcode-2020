@@ -237,16 +237,16 @@ pub fn part2(lines: &Vec<String>) -> i64 {
     // let mut circle = Circle{ ranges: ranges };
     let mut circle = Circle { next: next };
     for step in 0..n {
-        if step % 100000 == 0 {
-            println!("step = {}", step);
-            // println!("step = {}, ranges = {}", step, circle.ranges.len());
-            // circle.print();
-        }
+        // if step % 100000 == 0 {
+        //     println!("step = {}", step);
+        //     // println!("step = {}, ranges = {}", step, circle.ranges.len());
+        //     // circle.print();
+        // }
         // println!("");
         // println!("step = {}, current = ({})", step, current_cup);
         // circle.print();
 
-        let mut removed = Vec::new();
+        let mut removed = Vec::with_capacity(3);
         for i in 0..3 {
             removed.push(circle.remove_after(current_cup))
         }
