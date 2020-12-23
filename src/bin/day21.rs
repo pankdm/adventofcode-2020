@@ -20,7 +20,6 @@ struct Input {
     alergens: Vec<String>,
 }
 
-
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut inputs = Vec::new();
     let mut counts = HashMap::new();
@@ -133,7 +132,10 @@ pub fn part2(lines: &Vec<String>) -> i64 {
     ];
 
     output.sort_by_key(|x| x.0);
-    println!("{}", output.iter().map(|x| x.1).collect::<Vec<_>>().join(","));
+    println!(
+        "{}",
+        output.iter().map(|x| x.1).collect::<Vec<_>>().join(",")
+    );
 
     -1
 }
