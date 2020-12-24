@@ -9,10 +9,10 @@ use std::collections::{HashMap, HashSet, VecDeque};
 use std::env;
 use std::fs;
 
-use serde_scan;
+// use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
+
 
 // as e, se, sw, w, nw, and ne
 
@@ -155,13 +155,13 @@ mod tests {
     #[test]
     fn test_part1() {
         let lines = read_main_input();
-        assert_eq!(part1(&lines), -1);
+        assert_eq!(part1(&lines), 354);
     }
 
     #[test]
     fn test_part2() {
         let lines = read_main_input();
-        assert_eq!(part2(&lines), -1);
+        assert_eq!(part2(&lines), 3608);
     }
 }
 
@@ -179,15 +179,4 @@ pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
     }
     let input = fs::read_to_string(&args[1]).unwrap();
     to_lines(&input)
-}
-
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    let lines = read_input_from_args(&args);
-
-    dbg!(walk("esew"));
-    dbg!(walk("nwwswee"));
-
-    // println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
 }

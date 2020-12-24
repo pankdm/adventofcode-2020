@@ -8,8 +8,7 @@
 use itertools::Itertools;
 use std::collections::{HashMap, HashSet, VecDeque};
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut x = Vec::new();

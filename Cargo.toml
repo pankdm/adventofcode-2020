@@ -1,5 +1,6 @@
 [package]
 name = "aoc"
+default-run = "aoc"
 version = "0.1.0"
 authors = ["Dmitry Panin <pank.dm@gmail.com>"]
 edition = "2018"
