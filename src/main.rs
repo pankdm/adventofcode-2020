@@ -31,9 +31,10 @@ pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
 
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let lines = read_input_from_args(&args);
+    // days::day01::main();
+    // let args: Vec<String> = env::args().collect();
+    // let lines = read_input_from_args(&args);
 
-    dbg!(day24::part1(&lines));
-    dbg!(day24::part2(&lines));
+    // dbg!(day15::part1(&lines));
+    // dbg!(day15::part2(&lines));
 }

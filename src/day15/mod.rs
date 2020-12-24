@@ -18,43 +18,10 @@ use crate::utils::*;
 // announces how many turns apart the number is from when it was previously spoken.
 
 pub fn part1(lines: &Vec<String>) -> i64 {
-    let mut res = 0;
-    let parts = split_string(&lines[0], ",");
-
-    let mut nums = Vec::new();
-    let mut turn = 1;
-    for part in parts.iter() {
-        nums.push((parse_i64(part), turn));
-        turn += 1;
-    }
-
-    loop {
-        if nums.len() > 2020 {
-            break;
-        }
-        let last = *nums.last().unwrap();
-        println!(" at turn {} last = {:?}", turn, last);
-        let mut diff = -1;
-        for i in (0..nums.len() - 1).rev() {
-            if nums[i].0 == last.0 {
-                diff = last.1 - nums[i].1;
-                break;
-            }
-        }
-        if diff > 0 {
-            nums.push((diff, turn));
-        } else {
-            nums.push((0, turn));
-        }
-        turn += 1;
-    }
-
-    dbg!(nums[2019]);
-    dbg!(nums[2020]);
-    nums[2020 - 1].0
+    solution_impl(lines, 2020)
 }
 
-pub fn part2(lines: &Vec<String>) -> i64 {
+pub fn solution_impl(lines: &Vec<String>, times: usize) -> i64 {
     let mut res = 0;
     let parts = split_string(&lines[0], ",");
 
@@ -68,12 +35,8 @@ pub fn part2(lines: &Vec<String>) -> i64 {
         turn += 1;
     }
 
-    let n = 30000000;
-    // let n = 10;
-    // let n = 2020;
-
     loop {
-        if nums.len() > n {
+        if nums.len() > times {
             break;
         }
         let last = *nums.last().unwrap();
@@ -89,18 +52,17 @@ pub fn part2(lines: &Vec<String>) -> i64 {
         }
 
         nums.push((diff, turn));
-        if !before.contains_key(&diff) {
-            before.insert(diff, vec![turn]);
-        } else {
-            let mut prev = &before[&diff];
-            before.insert(diff, vec![*prev.last().unwrap(), turn]);
-        }
+        before.entry(diff).or_insert(vec![]).push(turn);
         turn += 1;
     }
 
-    dbg!(nums[n - 1]);
-    dbg!(nums[n]);
-    nums[n - 1].0
+    dbg!(nums[times - 1]);
+    dbg!(nums[times]);
+    nums[times - 1].0
+}
+
+pub fn part2(lines: &Vec<String>) -> i64 {
+    solution_impl(lines, 30000000)
 }
 
 #[cfg(test)]
@@ -111,14 +73,32 @@ mod tests {
     #[test]
     fn test_part1() {
         let lines = read_main_input();
-        assert_eq!(part1(&lines), -1);
+        assert_eq!(part1(&lines), 1373);
     }
 
     #[test]
     fn test_part2() {
         let lines = read_main_input();
-        assert_eq!(part2(&lines), -1);
+        assert_eq!(part2(&lines), 112458);
     }
+}
+
+
+pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
+    println!("args: {:?}", args);
+    if args.len() <= 1 {
+        return read_main_input();
+    }
+    let input = fs::read_to_string(&args[1]).unwrap();
+    to_lines(&input)
+}
+
+pub fn main() {
+    let args: Vec<String> = env::args().collect();
+    let lines = read_input_from_args(&args);
+
+    dbg!(part1(&lines));
+    dbg!(part2(&lines));
 }
 
 pub fn read_main_input() -> Vec<String> {

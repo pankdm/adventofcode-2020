@@ -34,7 +34,7 @@ pub fn part1(lines: &Vec<String>) -> i64 {
         now += 1;
     }
 
-    -1
+    unreachable!();
 }
 
 mod my_bigint {
