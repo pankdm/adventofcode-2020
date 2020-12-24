@@ -29,7 +29,7 @@ pub fn part1(lines: &Vec<String>) -> i64 {
                     println!(" bit {} is set to 1: res = {}", bit, res);
                 }
                 if m == '0' {
-                    res ^= (res & 1 << bit);
+                    res ^= res & 1 << bit;
                     println!(" bit {} is set to 0: res = {}", bit, res);
                 }
             }
@@ -79,7 +79,7 @@ pub fn part2(lines: &Vec<String>) -> i64 {
                 }
                 if m == 'X' {
                     bits.push(bit);
-                    res ^= (res & 1 << bit);
+                    res ^= res & 1 << bit;
                     // println!(" bit {} is set to 0: res = {}", bit, res);
                 }
             }

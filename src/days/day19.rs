@@ -58,7 +58,6 @@ fn matches_impl(id: i64, rules: &HashMap<i64, Rule>, s: &Vec<char>, index: usize
             return (false, index);
         }
     }
-    unreachable!()
 }
 
 fn matches(rules: &HashMap<i64, Rule>, line: &String) -> bool {

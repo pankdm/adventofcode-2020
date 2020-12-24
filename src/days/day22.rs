@@ -129,7 +129,6 @@ fn play_recursive(
 
     let mut was_before = HashSet::new();
     let mut round = 0;
-    let mut infinity = false;
     let mut recursive = 0;
     let winner = {
         loop {
@@ -152,7 +151,6 @@ fn play_recursive(
             // }
 
             if was_before.contains(&key) {
-                infinity = true;
                 break Winner::P1;
             } else {
                 was_before.insert(key);

@@ -15,8 +15,8 @@ use crate::utils::*;
 
 pub fn eval(s: &Vec<char>, start: usize, end: usize, prev: &Vec<usize>) -> i64 {
     // println!("  eval from {:?}", s[start..=end].iter().collect::<String>());
-    let mut value = 0;
-    let mut next = 0;
+    let mut value;
+    let mut next;
     if s[end] == ')' {
         value = eval(s, prev[end] + 1, end - 1, prev);
         if prev[end] == start {
@@ -107,8 +107,8 @@ pub fn parse_tokens(s: &Vec<char>, start: usize, end: usize, prev: &Vec<usize>) 
 }
 
 pub fn eat_token(s: &Vec<char>, start: usize, end: usize, prev: &Vec<usize>) -> (i64, usize) {
-    let mut value = 0;
-    let mut go = 0;
+    let mut value;
+    let mut go;
     if s[end] == ')' {
         value = eval2(s, prev[end] + 1, end - 1, prev);
         go = prev[end];

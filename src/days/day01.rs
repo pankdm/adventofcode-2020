@@ -69,7 +69,7 @@ mod tests {
     }
 }
 
-fn main() {
+pub fn main() {
     let lines = read_main_input();
 
     println!("part1 = {}", part1(&lines));

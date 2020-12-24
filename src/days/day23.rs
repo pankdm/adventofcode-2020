@@ -71,7 +71,7 @@ pub fn part1(lines: &Vec<String>) -> i64 {
         let mut dst;
         loop {
             if label <= 0 {
-                label += (cnt as i64);
+                label += cnt as i64;
             }
             let mut found = false;
             if let Some(index) = find_by_value(&new_cups, label) {
