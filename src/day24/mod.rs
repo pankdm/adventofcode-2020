@@ -13,122 +13,75 @@ use std::fs;
 
 use crate::utils::*;
 
+fn walk(mut line: &str) -> (i64, i64) {
+    let dirs = vec![
+        ("e", (1, 0)),
+        ("w", (-1, 0)),
+        ("ne", (0, 1)),
+        ("sw", (0, -1)),
+        ("nw", (-1, 1)),
+        ("se", (1, -1)),
+    ];
 
-// as e, se, sw, w, nw, and ne
-
-fn walk(line: &str) -> (i64, i64) {
-    let v = to_v_char(line);
-    let mut i = 0;
     let mut x = 0;
     let mut y = 0;
-    loop {
-        if i >= v.len() {
-            break;
-        }
-        match v[i] {
-            'e' => {
-                x += 1;
-                i += 1;
+    while !line.is_empty() {
+        for (k, (dx, dy)) in dirs.iter() {
+            if line.starts_with(k) {
+                x += dx;
+                y += dy;
+                line = &line[k.len()..];
             }
-            'w' => {
-                x -= 1;
-                i += 1;
-            }
-            'n' => match v[i + 1] {
-                'e' => {
-                    y += 1;
-                    i += 2;
-                }
-                'w' => {
-                    y += 1;
-                    x -= 1;
-                    i += 2;
-                }
-                _ => unreachable!(),
-            },
-            's' => match v[i + 1] {
-                'e' => {
-                    y -= 1;
-                    x += 1;
-                    i += 2;
-                }
-                'w' => {
-                    y -= 1;
-                    i += 2;
-                }
-                _ => unreachable!(),
-            },
-            _ => unreachable!(),
         }
     }
     (x, y)
 }
 
-pub fn part1(lines: &Vec<String>) -> i64 {
+pub fn parse_grid(lines: &Vec<String>) -> HashSet<(i64, i64)> {
     let mut tiles = HashMap::new();
 
     for line in lines {
         let key = walk(line);
-        if tiles.contains_key(&key) {
-            tiles.insert(key, tiles[&key] + 1);
-        } else {
-            tiles.insert(key, 1);
-        }
+        *tiles.entry(key).or_insert(0) += 1;
     }
-    // TODO: code here
-    let mut res = 0;
-    for (k, v) in tiles.iter() {
-        res += v % 2;
-    }
-    res
+    tiles
+        .iter()
+        .filter(|(k, v)| *v % 2 == 1)
+        .map(|x| x.0)
+        .cloned()
+        .collect()
 }
 
-pub fn nearby(x: i64, y: i64) -> Vec<(i64, i64)> {
-    let d = vec!["e", "se", "sw", "w", "nw", "ne"];
+pub fn part1(lines: &Vec<String>) -> i64 {
+    let tiles = parse_grid(lines);
+    tiles.len() as i64
+}
+
+pub fn nearby(pt: &(i64, i64)) -> Vec<(i64, i64)> {
+    let dirs = vec![
+        ("e", (1, 0)),
+        ("w", (-1, 0)),
+        ("ne", (0, 1)),
+        ("sw", (0, -1)),
+        ("nw", (-1, 1)),
+        ("se", (1, -1)),
+    ];
+
+    let (x, y) = *pt;
     let mut res = Vec::new();
-    for dir in d.iter() {
-        let (dx, dy) = walk(dir);
+    for (_, (dx, dy)) in dirs.iter() {
         res.push((x + dx, y + dy));
     }
     res
 }
 
 pub fn part2(lines: &Vec<String>) -> i64 {
-    let mut tiles_tmp = HashMap::new();
-
-    for line in lines {
-        let key = walk(line);
-        if tiles_tmp.contains_key(&key) {
-            tiles_tmp.insert(key, tiles_tmp[&key] + 1);
-        } else {
-            tiles_tmp.insert(key, 1);
-        }
-    }
-
-    let mut tiles: HashSet<(i64, i64)> = HashSet::new();
-    let mut res = 0;
-    for (k, v) in tiles_tmp.iter() {
-        if v % 2 == 1 {
-            tiles.insert(k.clone());
-        }
-    }
-
+    let mut tiles = parse_grid(lines);
     for day in 1..=100 {
         let mut new_tiles = HashSet::new();
-        let mut to_process = HashSet::new();
-        for (x, y) in tiles.iter() {
-            for next_pt in nearby(*x, *y) {
-                to_process.insert(next_pt);
-            }
-        }
+        let to_process: HashSet<_> = tiles.iter().flat_map(|x| nearby(x)).collect();
         for pt in to_process.iter() {
-            let (x, y) = pt;
-            let mut num_black = 0;
-            for next_pt in nearby(*x, *y) {
-                if tiles.contains(&next_pt) {
-                    num_black += 1;
-                }
-            }
+            let num_black = nearby(pt).iter().filter(|x| tiles.contains(x)).count();
             if tiles.contains(pt) {
                 if num_black == 1 || num_black == 2 {
                     new_tiles.insert(pt.clone());
@@ -163,20 +116,15 @@ mod tests {
         let lines = read_main_input();
         assert_eq!(part2(&lines), 3608);
     }
+
+    #[test]
+    fn test_walk() {
+        assert_eq!(walk("nwwswee"), (0, 0))
+    }
 }
 
 pub fn read_main_input() -> Vec<String> {
     let input = fs::read_to_string("input/day24/in.txt").unwrap();
     // let input = fs::read_to_string("input/day07/demo.txt").unwrap();
-    to_lines(&input)
-}
-
-pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
-    // unreachable!();
-    println!("args: {:?}", args);
-    if args.len() <= 1 {
-        return read_main_input();
-    }
-    let input = fs::read_to_string(&args[1]).unwrap();
     to_lines(&input)
 }
