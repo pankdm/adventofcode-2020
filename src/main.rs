@@ -12,7 +12,6 @@ use std::fs;
 extern crate aoc;
 use aoc::*;
 
-mod utils;
 use utils::*;
 
 pub fn read_main_input() -> Vec<String> {
@@ -29,6 +28,7 @@ pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
     let input = fs::read_to_string(&args[1]).unwrap();
     to_lines(&input)
 }
+
 
 fn main() {
     let args: Vec<String> = env::args().collect();

@@ -11,8 +11,7 @@ use std::fs;
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 type Range = (i64, i64, i64, i64);
 
@@ -166,21 +165,3 @@ pub fn read_main_input() -> String {
     input.trim().to_string()
 }
 
-pub fn read_input_from_args(args: &Vec<String>) -> String {
-    println!("args: {:?}", args);
-    let input = if args.len() <= 1 {
-        read_main_input()
-    } else {
-        fs::read_to_string(&args[1]).unwrap()
-    };
-    // to_lines(&input)
-    input.trim().to_string()
-}
-
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    let data = read_input_from_args(&args);
-
-    println!("part1 = {}", part1(&data));
-    println!("part2 = {}", part2(&data));
-}

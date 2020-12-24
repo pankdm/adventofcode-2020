@@ -11,8 +11,7 @@ use std::fs;
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 pub fn eval(s: &Vec<char>, start: usize, end: usize, prev: &Vec<usize>) -> i64 {
     // println!("  eval from {:?}", s[start..=end].iter().collect::<String>());
@@ -224,21 +223,4 @@ pub fn read_main_input() -> Vec<String> {
     let input = fs::read_to_string("input/day18/in.txt").unwrap();
     // let input = fs::read_to_string("input/day07/demo.txt").unwrap();
     to_lines(&input)
-}
-
-pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
-    println!("args: {:?}", args);
-    if args.len() <= 1 {
-        return read_main_input();
-    }
-    let input = fs::read_to_string(&args[1]).unwrap();
-    to_lines(&input)
-}
-
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    let lines = read_input_from_args(&args);
-
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
 }

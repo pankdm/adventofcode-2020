@@ -11,8 +11,7 @@ use std::fs;
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 fn compute_score(p: &VecDeque<i64>) -> i64 {
     let mut res = 0;
@@ -288,23 +287,4 @@ pub fn read_main_input() -> String {
     // let input = fs::read_to_string("input/day07/demo.txt").unwrap();
     // to_lines(&input)
     input
-}
-
-pub fn read_input_from_args(args: &Vec<String>) -> String {
-    println!("args: {:?}", args);
-    if args.len() <= 1 {
-        return read_main_input();
-    }
-    let input = fs::read_to_string(&args[1]).unwrap();
-    input
-    // to_lines(&input)
-}
-
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    let lines = read_input_from_args(&args);
-
-    // println!("part1 = {}", part1(&lines));
-    // wrong answers: part2 = 33558
-    println!("part2 = {}", part2(&lines));
 }

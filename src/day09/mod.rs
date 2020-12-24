@@ -10,8 +10,7 @@ use std::fs;
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 // const N: usize = 25;
 const N: usize = 25;
@@ -83,11 +82,4 @@ mod tests {
 pub fn read_main_input() -> Vec<String> {
     let input = fs::read_to_string("input/day09/in.txt").unwrap();
     to_lines(&input)
-}
-
-fn main() {
-    let lines = read_main_input();
-
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
 }

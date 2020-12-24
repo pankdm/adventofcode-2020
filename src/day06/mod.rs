@@ -9,8 +9,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 pub fn part1(data: &str) -> i64 {
     data.trim()
@@ -67,9 +66,3 @@ pub fn read_main_input() -> String {
     // unreachable!()
 }
 
-fn main() {
-    let data = read_main_input();
-
-    println!("part1 = {}", part1(&data));
-    println!("part2 = {}", part2(&data));
-}

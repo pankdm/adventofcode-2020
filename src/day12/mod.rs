@@ -11,8 +11,7 @@ use std::fs;
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 // Action N means to move north by the given value.
 // Action S means to move south by the given value.
@@ -123,21 +122,4 @@ mod tests {
 pub fn read_main_input() -> Vec<String> {
     let input = fs::read_to_string("input/day12/in.txt").unwrap();
     to_lines(&input)
-}
-
-pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
-    if args.len() <= 1 {
-        return read_main_input();
-    }
-    let input = fs::read_to_string(&args[1]).unwrap();
-    to_lines(&input)
-}
-
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    println!("args: {:?}", args);
-    let lines = read_main_input();
-
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
 }

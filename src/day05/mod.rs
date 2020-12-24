@@ -9,8 +9,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 pub fn get_seat_id(line: &String) -> i64 {
     let s = to_v_char(line);
@@ -105,12 +104,4 @@ mod tests {
 pub fn read_main_input() -> Vec<String> {
     read_input("input/day05/in.txt")
     // unreachable!()
-}
-
-fn main() {
-    let lines = read_main_input();
-
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
-    println!("part2 alt = {}", part2_alt(&lines));
 }

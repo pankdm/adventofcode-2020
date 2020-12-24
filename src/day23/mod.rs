@@ -11,8 +11,7 @@ use std::fs;
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 // Each move, the crab does the following actions:
 
@@ -308,12 +307,4 @@ pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
     }
     let input = fs::read_to_string(&args[1]).unwrap();
     to_lines(&input)
-}
-
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    let lines = read_input_from_args(&args);
-
-    // println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
 }

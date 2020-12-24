@@ -11,8 +11,7 @@ use std::fs;
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 use num_bigint::*;
 
@@ -209,25 +208,3 @@ pub fn read_main_input() -> Vec<String> {
     to_lines(&input)
 }
 
-pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
-    if args.len() <= 1 {
-        return read_main_input();
-    }
-    let input = fs::read_to_string(&args[1]).unwrap();
-    to_lines(&input)
-}
-
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    println!("args: {:?}", args);
-    let lines = read_input_from_args(&args);
-
-    // println!("part1 = {}", part1(&lines));
-    // println!("part2 = {:?}", part2(&lines));
-    dbg!(part2_crt("17,x,13,19"));
-    dbg!(part2_sieving("17,x,13,19"));
-
-    println!("part2 CRT = {:?}", part2_crt(&lines[1]));
-    println!("part2 Sieving = {:?}", part2_sieving(&lines[1]));
-    // dbg!(part2_crt(&lines));
-}

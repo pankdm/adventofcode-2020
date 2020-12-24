@@ -9,8 +9,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 pub fn part1(lines: &Vec<String>) -> i64 {
     check_slope(lines, 3, 1)
@@ -68,11 +67,4 @@ mod tests {
         let lines = read_main_input();
         assert_eq!(part2(&lines), 2655892800);
     }
-}
-
-fn main() {
-    let lines = read_main_input();
-
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
 }

@@ -11,8 +11,7 @@ use std::fs;
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 fn extract_bag_color(s: &str) -> String {
     s.trim_end_matches(" bag")
@@ -149,10 +148,4 @@ pub fn read_main_input() -> Vec<String> {
     let input = fs::read_to_string("input/day07/in.txt").unwrap();
     // let input = fs::read_to_string("input/day07/demo.txt").unwrap();
     to_lines(&input)
-}
-
-fn main() {
-    let lines = read_main_input();
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
 }

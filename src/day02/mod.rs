@@ -9,8 +9,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 pub fn part1(lines: &Vec<String>) -> i64 {
     let mut res = 0;
@@ -73,9 +72,3 @@ mod tests {
     }
 }
 
-fn main() {
-    let lines = read_main_input();
-
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
-}

@@ -9,8 +9,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 
 use serde_scan;
 
-extern crate aoc;
-use aoc::*;
+use crate::utils::*;
 
 fn check_pass1(fields: &HashMap<String, String>) -> bool {
     let required = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
@@ -209,10 +208,3 @@ mod tests {
     }
 }
 
-fn main() {
-    let lines = read_main_input();
-    // let lines = read_input("input/day04/t1.txt");
-
-    println!("part1 = {}", part1(&lines));
-    println!("part2 = {}", part2(&lines));
-}
