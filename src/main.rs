@@ -15,7 +15,7 @@ use aoc::*;
 use utils::*;
 
 pub fn read_main_input() -> Vec<String> {
-    let input = fs::read_to_string("input/day24/in.txt").unwrap();
+    let input = fs::read_to_string("input/day25/in.txt").unwrap();
     // let input = fs::read_to_string("input/day07/demo.txt").unwrap();
     to_lines(&input)
 }
@@ -29,9 +29,8 @@ pub fn read_input_from_args(args: &Vec<String>) -> Vec<String> {
     to_lines(&input)
 }
 
-
 fn main() {
-    days::day01::main();
+    days::day25::main();
     // let args: Vec<String> = env::args().collect();
     // let lines = read_input_from_args(&args);
 
