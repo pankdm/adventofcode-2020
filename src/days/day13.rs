@@ -127,4 +127,3 @@ pub fn read_main_input() -> Vec<String> {
     // let input = fs::read_to_string("input/day07/demo.txt").unwrap();
     to_lines(&input)
 }
-

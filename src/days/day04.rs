@@ -207,4 +207,3 @@ mod tests {
         assert_eq!(part2(&lines), 153);
     }
 }
-

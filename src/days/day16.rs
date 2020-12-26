@@ -164,4 +164,3 @@ pub fn read_main_input() -> String {
     // to_lines(&input)
     input.trim().to_string()
 }
-

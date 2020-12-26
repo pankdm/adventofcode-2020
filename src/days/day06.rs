@@ -65,4 +65,3 @@ pub fn read_main_input() -> String {
     // read_input("input/day06/in.txt")
     // unreachable!()
 }
-
